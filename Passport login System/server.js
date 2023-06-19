@@ -11,7 +11,6 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 
 const initializePassport = require("./passport-config");
-const passport = require("passport");
 initializePassport(
   passport,
   (email) => users.find((user) => user.email === email),
@@ -30,7 +29,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
@@ -70,10 +68,9 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
   } catch {
     res.redirect("/register");
   }
-  // console.log(users);
 });
 
-app.delete("/login", (req, res) => {
+app.delete("/logout", (req, res) => {
   req.logOut();
   res.redirect("/login");
 });
@@ -82,6 +79,7 @@ function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
+
   res.redirect("/login");
 }
 
