@@ -2,6 +2,15 @@ const express = require("express");
 const req = require("express/lib/request");
 const app = express();
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+
+const initializePassport = require("./passport-config");
+const passport = require("passport");
+initializePassport(passport, (email) =>
+  users.find((user) => user.email === email)
+);
 
 const users = [];
 
@@ -31,7 +40,11 @@ app.post("/register", async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-  } catch {}
+    res.redirect("/login");
+  } catch {
+    res.redirect("/register");
+  }
+  // console.log(users);
 });
 
 app.listen(3000);
