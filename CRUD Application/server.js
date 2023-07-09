@@ -1,0 +1,1 @@
+express morgan nodemon ejs bady-parser dotenv mongoose axios
